@@ -17,7 +17,7 @@ public class UserApplication {
 
         // Hardcode the external config location
         Map<String, Object> defaultProps = new HashMap<>();
-        defaultProps.put("spring.config.location", "file:/home/abhilash/Desktop/learning/learn-java/microservices/user-microservice/src/main/resources/application.properties");
+        defaultProps.put("spring.config.location", "file:/home/abhilash/Desktop/java-microservices/user-microservice/src/main/resources/application.properties");
         app.setDefaultProperties(defaultProps);
         app.run(args);
     }

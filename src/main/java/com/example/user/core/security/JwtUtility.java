@@ -20,9 +20,6 @@ public class JwtUtility {
     @Value("${spring.application.jwt.access-token-lifetime}")
     private Integer ACCESS_TOKEN_LIFETIME;
 
-    @Value("${spring.application.jwt.refresh-token-lifetime}")
-    private Integer REFRESH_TOKEN_LIFETIME;
-
     private SecretKey getSecretKey() {
         byte[] keyBytes = SECRET_KEY.getBytes(); // based on key length the algorithm will be decided.
         return Keys.hmacShaKeyFor(keyBytes);

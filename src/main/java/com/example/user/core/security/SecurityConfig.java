@@ -36,7 +36,7 @@ public class SecurityConfig {
                                 "authentication/**"
                         ).permitAll()
                         .anyRequest()
-                        .authenticated()
+                        .permitAll()
                 )
                 .logout(logout -> logout.logoutSuccessUrl("/login"))
                 .csrf(csrf->csrf.disable());
