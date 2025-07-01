@@ -32,7 +32,7 @@ public class GroupEntity {
     private String name;
 
     @Schema(description = "Users to which this group is mapped to", example = "1")
-    @ManyToMany(mappedBy = "groups", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "groups", fetch = FetchType.LAZY)
     private List<UserEntity> users = new ArrayList<>();
 
     @Schema(description = "List of modules mapped to this group")

@@ -1,5 +1,6 @@
 package com.example.user.authentication.controllers;
 
+import com.example.user.authentication.services.AuthenticationService;
 import com.example.user.core.base.utils.SetCookiesUtil;
 import com.example.user.core.security.JwtUtility;
 import com.example.user.users.dto.UserAuthenticationDto;
@@ -11,16 +12,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,13 +32,13 @@ public class AuthenticationController {
     private UserService userService;
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
     private JwtUtility jwtUtility;
 
     @Autowired
     private Environment environment;
+
+    @Autowired
+    private AuthenticationService authenticationService;
 
     //    @Operation(summary = "Authenticate using user credentials", description = "Returns refresh and access tokens.")
 //    @ApiResponses(value = {
@@ -51,13 +48,7 @@ public class AuthenticationController {
     @PostMapping("login/")
     public ResponseEntity<Map<String, String>> authenticate(@RequestBody UserAuthenticationDto userDto) {
         try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            userDto.getUsername(),
-                            userDto.getPassword()));
-
-            UserDetails userDetails = userService.loadUserByUsername(userDto.getUsername());
-            String access = jwtUtility.generateToken(userDetails.getUsername());
+            String access = authenticationService.loginViaCredentials(userDto);
             String accessCookieName = StringUtils.hasText(environment.getProperty("app.jwt.access-cookie-name")) ? environment.getProperty("app.jwt.access-cookie-name") : "JAccess";
             int accessJwtLifetime = Integer.parseInt(StringUtils.hasText(environment.getProperty("spring.application.jwt.access-token-lifetime")) ? environment.getProperty("spring.application.jwt.access-token-lifetime") : "5");
             // Set cookies now

@@ -6,15 +6,16 @@ import lombok.*;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@NoArgsConstructor
+@Table(name = "auth_tokens")
 @Builder
+@Entity
 public class TokenEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private String id;
+    private Long id;
 
     private Long iat;
 
@@ -22,12 +23,14 @@ public class TokenEntity {
 
     private String token;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    private Boolean isPrematureTerminated;
+
+    @ManyToOne
     private SessionEntity session;
 
     @Override
-    public String toString(){
-        return this.token + this.exp;
+    public String toString() {
+        return this.token + this.exp.toString();
     }
 
 }

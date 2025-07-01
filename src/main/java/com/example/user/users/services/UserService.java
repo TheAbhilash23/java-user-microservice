@@ -4,11 +4,9 @@ import com.example.user.users.dto.UserDto;
 import com.example.user.users.dto.UserPermissionsDto;
 import com.example.user.users.entities.UserEntity;
 import com.example.user.users.repository.UserRepository;
-import com.sun.source.tree.Tree;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,7 +18,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
 
     @Autowired
     private final UserRepository userRepository;
@@ -115,23 +113,7 @@ public class UserService implements UserDetailsService {
         return false;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity userEntity = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        UserEntity user = UserEntity.builder()
-                .id(userEntity.getId())
-                .username(userEntity.getUsername())
-                .password(userEntity.getPassword())
-                .email(userEntity.getEmail())
-                .isEnabled(userEntity.isEnabled())
-                .firstName(userEntity.getFirstName())
-                .lastName(userEntity.getLastName())
-                .roles(userEntity.getRoles())
-                .build();
-        user.setRoles(getUserRoles(user.getId()));
-        return user;
-    }
+
 
     /**
      * Sets a new password for the user with the given id, using the password from the provided UserDto.

@@ -11,3 +11,12 @@ The token should be stateful and should be stored in db as well.
 #### - So it is important to keep track of the session.
 #### - The token must also contain the information of the ip address of the client. If the user logs in from another ip address while their session is live, then, log out.
 #### - rate limit the api to "1 requests/second"
+
+
+## Status:-
+### 
+
+| Flow           | Request Api   | Status                                    | Class.method                              | Business Flow                                                       | User.IsEnabled                                                | User.sessions                                                                                                                              | When to disable user                     |
+|----------------|---------------|-------------------------------------------|-------------------------------------------|---------------------------------------------------------------------|---------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------|
+| Login          | POST login/   | Ending of user session AND tokens pending | AuthenticationService.loginViaCredentials | User session does not exist/already expired/successfully logged out | Must be true before creating the user session                 | No Active Session prior to login                                                                                                           | User session is active before logging in |
+| Authenticate   | Any Request   | Auto update of token pending              | JwtFilter.doFilterInternal                | User session exists and the client has the token (eg in cookies)    | Must be true.                                                 | 1. Only 1 active session<br/>2. Only one active token in db <br/> 3. Session control is through both session entity and token entity in db | NA                                       |

@@ -4,7 +4,6 @@ import com.example.user.core.controllers.BaseController;
 import com.example.user.users.dto.UserDto;
 import com.example.user.users.services.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
